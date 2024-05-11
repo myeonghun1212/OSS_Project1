@@ -55,7 +55,16 @@ do
 	if [ $choice -eq 3 ]; then
 		read -p "Do you want to know Top-3 attendance data and average attendance? (y/n) :" confirm
 		if [ $confirm = 'y' ]; then
+			echo "***Top-3 Attendance Match***"
+			echo ""
 			cat $3 | sort -nr -t, -k2 | head -n 3 | awk -F, '{printf("%s vs %s (%s)\n%d %s\n\n", $3, $4, $1, $2, $7)}'
+		fi
+	fi
+
+	if [ $choice -eq 3 ]; then
+		read -p "Do you want to get each team's ranking and the highest-scoring player? (y/n) :" confirm
+		if [ $confirm = 'y' ]; then
+			cat $1 | sort -n -k6 -t',' | tail -n +2 | awk -F, -v file=$2 '{system("cat "file" | grep \""$1"\" -a | sort -rn -t, -k7 | head -n 1")}' | awk -F, '{printf("%d %s\n %s %d\n\n", NR, $4, $1 , $7)}'
 		fi
 	fi
 
