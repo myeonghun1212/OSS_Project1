@@ -61,7 +61,7 @@ do
 		fi
 	fi
 
-	if [ $choice -eq 3 ]; then
+	if [ $choice -eq 4 ]; then
 		read -p "Do you want to get each team's ranking and the highest-scoring player? (y/n) :" confirm
 		if [ $confirm = 'y' ]; then
 			cat $1 | sort -n -k6 -t',' | tail -n +2 | awk -F, -v file=$2 '{system("cat "file" | grep \""$1"\" -a | sort -rn -t, -k7 | head -n 1")}' | awk -F, '{printf("%d %s\n %s %d\n\n", NR, $4, $1 , $7)}'
