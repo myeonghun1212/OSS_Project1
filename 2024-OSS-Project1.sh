@@ -62,7 +62,7 @@ do
 
 	#데이터를 attendance 기준 정렬 위에 3개만 꺼낸 다음 awk로 포맷팅
 	if [ $choice -eq 3 ]; then
-		read -p "Do you want to know Top-3 attendance data and average attendance? (y/n) :" confirm
+		read -p "Do you want to know Top-3 attendance data? (y/n) :" confirm
 		if [ $confirm = 'y' ]; then
 			echo "***Top-3 Attendance Match***"
 			echo ""
