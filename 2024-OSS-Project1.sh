@@ -52,6 +52,13 @@ do
 		cat $1 | awk -F',' -v t="$target" '$6==t{printf("%d %s %lf\n", $6,$1, ($2/($2+$3+$4)))}'
 	fi
 
+	if [ $choice -eq 3 ]; then
+		read -p "Do you want to know Top-3 attendance data and average attendance? (y/n) :" confirm
+		if [ $confirm = 'y' ]; then
+			cat $3 | sort -nr -t, -k2 | head -n 3 | awk -F, '{printf("%s vs %s (%s)\n%d %s\n\n", $3, $4, $1, $2, $7)}'
+		fi
+	fi
+
 	if [ $choice -eq 7 ]; then
 		echo "Bye!"
 		break
