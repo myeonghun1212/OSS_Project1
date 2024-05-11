@@ -1,5 +1,7 @@
 #!/usr/bin/bash
 
+#./2024-OSS-Project1.sh teams.csv players.csv matches.csv
+
 student_id="12345678"
 student_name=$(whoami)
 
@@ -42,6 +44,21 @@ do
 			# 결과 출력
 			echo Team: $current_club, Apperance: $appearances, Goal: $goals, Assist: $assists
 		fi
+	fi
+
+	if [ $choice -eq 2 ]; then
+		read -p "Do you want to get the Heung-Min Son's data? (y/n) :" confirm
+		if [ $confirm = 'y' ]; then
+			read -p "What do you want to get the team data of league_position[1~20] : " target
+
+			cat $2 | awk -F, -v t=$target '$6 == t {printf("%d %s %lf", $6,$1, ($2/($2+$3+$4)))}'
+		fi
+	fi
+
+	if [ $choice -eq 2 ]; then
+		read -p "What do you want to get the team data of league_position[1~20] : " target
+
+		cat $2 | awk -F, -v t=$target '$6 == t {printf("%d %s %lf", $6,$1, ($2/($2+$3+$4)))}'
 	fi
 
 	if [ $choice -eq 7 ]; then
