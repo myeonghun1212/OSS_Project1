@@ -1,10 +1,16 @@
 #!/usr/bin/bash
 
-#./2024-OSS-Project1.sh teams.csv players.csv matches.csv
+#입력 형태 ./2024-OSS-Project1.sh teams.csv players.csv matches.csv
+#에러 메시지 처리
+if [ $# -ne 3 ]; then
+	echo "usage: ./2024-OSS-Project1.sh file1 file2 file3"
+	exit 1
+fi
 
-student_id="12345678"
+student_id="12234183"
 student_name=$(whoami)
 
+# 출력의 좌우 대칭을 맞춤
 total_length=39
 name_length=$(echo $student_name | wc -m )
 padding_length=$(((total_length - name_length - 9) / 2 - 1))
@@ -18,6 +24,7 @@ echo "***************************************"
 
 while :
 do
+#메뉴표시
 	echo "[MENU]"
 	echo "1. Get the data of Heung-Min Son's Current Club, Appearances, Goals, Assists in players.csv"
 	echo "2. Get the team data to enter a league position in teams.csv"
@@ -47,11 +54,13 @@ do
 	fi
 
 
+	#awk로 입력한 league_position이면 수식에 맞춰 값 출력
 	if [ $choice -eq 2 ]; then
 		read -p "What do you want to get the team data of league_position[1~20] : " target
 		cat $1 | awk -F',' -v t="$target" '$6==t{printf("%d %s %lf\n", $6,$1, ($2/($2+$3+$4)))}'
 	fi
 
+	#데이터를 attendance 기준 정렬 위에 3개만 꺼낸 다음 awk로 포맷팅
 	if [ $choice -eq 3 ]; then
 		read -p "Do you want to know Top-3 attendance data and average attendance? (y/n) :" confirm
 		if [ $confirm = 'y' ]; then
@@ -61,6 +70,9 @@ do
 		fi
 	fi
 
+	#teams 데이터를 leaguepos기준 정렬 후 첫 행 제거한 다음 
+	#awk의 system 사용해서 각 행마다 players 로딩 팀 이름 기준으로 찾고 점수 기준 정렬 후 첫 째 행 꺼낸 다음
+	#awk 사용해서 포맷팅
 	if [ $choice -eq 4 ]; then
 		read -p "Do you want to get each team's ranking and the highest-scoring player? (y/n) :" confirm
 		if [ $confirm = 'y' ]; then
@@ -68,6 +80,9 @@ do
 		fi
 	fi
 
+	#sed 사용해서 , 이후 제거 (시간 이외의 정보 필요없음)
+	#sed 사용해서 3글자 숫자2개 숫자4개 - 남은문자를 3/1/2/4 순으로 바꿈
+	#sed 사용해서 각 월 문자(Aug)를 숫자(8)로 바꿈
 	if [ $choice -eq 5 ]; then
 		read -p "Do you want to modify the format of date? (y/n) :" confirm
 		if [ $confirm = 'y' ]; then
@@ -75,6 +90,16 @@ do
 		fi
 	fi
 
+	#1. 선택창 출력 방법
+	#len에 teams의 전체 길이 저장
+	#2열로 출력해야하니까 2로 나눠서 왼쪽에는 1 2 3 4.. 오른쪽에는 왼쪽값에 길이/2를 더한 값에 해당하는 번호를 출력해야함
+	#awk로 위에서 구한 인덱스에 맞춰서 이름 꺼내옴
+	#출력
+	#2. 입력받은 이후 최대 차이 구하기
+	#팀 이름 awk로 가져옴 사용자가 입력한 번호와 행번호를 잘 비교
+	#awk를 사용해서 matches에서 사용자가 입력한 팀 기준으로 시간,홈팀,원정팀,홈팀점수,원정팀점수,점수차이 형식으로 출력 (새로운 csv 처럼 활용)
+	#출력한 양식을 정렬 후 맨 위 한줄 가지고 와서 점수 차이만 저장하면 그게 최대 점수 차이
+	#출력한 양식에서 awk로 앞서 구한 최대 점수차이랑 점수 차이가 같은 행 찾아서 출력함 ( 같은 점수차가 여러개 있을 수 있어서 다시 검사 해야함 )
 	if [ $choice -eq 6 ]; then
 		len=$(cat $1 | wc -l)
 		len=$((len-1))
