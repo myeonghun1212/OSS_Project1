@@ -68,6 +68,29 @@ do
 		fi
 	fi
 
+	if [ $choice -eq 5 ]; then
+		read -p "Do you want to modify the format of date? (y/n) :" confirm
+		if [ $confirm = 'y' ]; then
+			sed -E 's/,.*//' $3 | sed 's/\(...\) \([0-9]\{2\}\) \([0-9]\{4\}\) - \(.*\)/\3\/\1\/\2 \4/g' | sed 's/Jan/01/g; s/Feb/02/g; s/Mar/03/g; s/Apr/04/g; s/May/05/g; s/Jun/06/g; s/Jul/07/g; s/Aug/08/g; s/Sep/09/g; s/Oct/10/g; s/Nov/11/g; s/Dec/12/g;' | head -n 11 | tail -n +2
+		fi
+	fi
+
+	if [ $choice -eq 6 ]; then
+		len=$(cat $1 | wc -l)
+		len=$((len-1))
+		echo "$len"
+		for i in $(seq 1 $((len / 2))); do
+			a=$(awk -F, -v t=$i 'NR==t+1{print $1}' $1)
+			diff=$((i+len/2))
+			b=$(awk -F, -v t=$diff 'NR==t+1{print $1}' $1)
+			echo $i")"$a"	"$diff")"$b
+		done
+		read -p "Enter your team number :" num
+		selected_team=$(awk -F, -v t=$num 'NR==t+1{print $1}' $1)
+		max_diff=$(awk -F',' -v team="$selected_team" '$3==team{printf("%s,%s,%s,%d,%d,%d\n", $1, $3, $4, $5, $6, ($5-$6))}' $3 | sort -nr -k6 -t, | head -n 1 | awk -F, '{print $6}')
+		awk -F',' -v team="$selected_team" '$3==team{printf("%s,%s,%s,%d,%d,%d\n", $1, $3, $4, $5, $6, ($5-$6))}' $3 | awk -F',' -v md=$max_diff '$6==md{printf("%s\n%s %d vs %d %s\n\n", $1, $2, $4,$5,$3)}' 
+	fi
+
 	if [ $choice -eq 7 ]; then
 		echo "Bye!"
 		break
