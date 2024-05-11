@@ -26,6 +26,30 @@ do
 	echo "7. Exit"
 	read -p "Enter your CHOICE (1~7) :" choice
 
+	if [ $choice -eq 1 ]; then
+		read -p "Do you want to get the Heung-Min Son's data? (y/n) :" confirm
+		if [ $confirm = 'y' ]; then
+			players_file=$1
+			# 손흥민 선수의 정보 추출
+			son_data=$(grep "Heung-Min Son" $players_file)
+
+			# 필요한 정보 추출
+			current_club=$(echo "$son_data" | cut -d ',' -f 4)
+			appearances=$(echo "$son_data" | cut -d ',' -f 6)
+			goals=$(echo "$son_data" | cut -d ',' -f 7)
+			assists=$(echo "$son_data" | cut -d ',' -f 8)
+
+			# 결과 출력
+			echo $son_data
+			echo "Son Heung-Min's data:"
+			echo "Current Club: $current_club"
+			echo "Appearances: $appearances"
+			echo "Goals: $goals"
+			echo "Assists: $assists"
+
+		break
+	fi
+
 	if [ $choice -eq 7 ]; then
 		echo "Bye!"
 		break
