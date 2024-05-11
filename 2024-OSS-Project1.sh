@@ -29,7 +29,7 @@ do
 	if [ $choice -eq 1 ]; then
 		read -p "Do you want to get the Heung-Min Son's data? (y/n) :" confirm
 		if [ $confirm = 'y' ]; then
-			players_file=$1
+			players_file=$2
 			# 손흥민 선수의 정보 추출
 			son_data=$(grep "Heung-Min Son" $players_file)
 
@@ -40,14 +40,8 @@ do
 			assists=$(echo "$son_data" | cut -d ',' -f 8)
 
 			# 결과 출력
-			echo $son_data
-			echo "Son Heung-Min's data:"
-			echo "Current Club: $current_club"
-			echo "Appearances: $appearances"
-			echo "Goals: $goals"
-			echo "Assists: $assists"
-
-		break
+			echo Team: $current_club, Apperance: $appearances, Goal: $goals, Assist: $assists
+		fi
 	fi
 
 	if [ $choice -eq 7 ]; then
