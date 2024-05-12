@@ -25,6 +25,7 @@ echo "***************************************"
 while :
 do
 #메뉴표시
+	echo
 	echo "[MENU]"
 	echo "1. Get the data of Heung-Min Son's Current Club, Appearances, Goals, Assists in players.csv"
 	echo "2. Get the team data to enter a league position in teams.csv"
@@ -33,10 +34,10 @@ do
 	echo "5. Get the modified format of date_GMT in matches.csv"
 	echo "6. Get the data of the winning team by the largest difference on home stadium in teams.csv & matches.csv"
 	echo "7. Exit"
-	read -p "Enter your CHOICE (1~7) :" choice
+	read -p "Enter your CHOICE (1~7) : " choice
 
 	if [ $choice -eq 1 ]; then
-		read -p "Do you want to get the Heung-Min Son's data? (y/n) :" confirm
+		read -p "Do you want to get the Heung-Min Son's data? (y/n) : " confirm
 		if [ $confirm = 'y' ]; then
 			players_file=$2
 			# 손흥민 선수의 정보 추출
